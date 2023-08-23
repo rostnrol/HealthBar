@@ -13,13 +13,16 @@ public class HealthBar : MonoBehaviour
 
 	private void Start()
 	{
-		_slider.value = _player.MaxHealth;
-		_slider.maxValue = _player.MaxHealth;
-	}
+		_slider.value = _player.CurrentHealth;
+        _slider.maxValue = _player.CurrentHealth;
+    }
 
-	public void SetHealth(float health)
+	public void SetHealth()
 	{
-		_changeHealth = StartCoroutine(ChangeHealth(health));
+        if (_changeHealth != null)
+            StopCoroutine(_changeHealth);
+
+        _changeHealth = StartCoroutine(ChangeHealth(_player.CurrentHealth));
 	}
 
 	private IEnumerator ChangeHealth(float health)

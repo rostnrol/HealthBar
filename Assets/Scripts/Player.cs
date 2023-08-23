@@ -1,30 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
 	[SerializeField] private HealthBar _healthBar;
+	[SerializeField] private UnityEvent _hitPlayer;
+	[SerializeField] private UnityEvent _healPlayer;
 
-	private float _maxHealth = 100;
-	private float _currentHealth;
+	public float MaxHealth => _maxHealth; 
+    public float CurrentHealth => _currentHealth;
+
+	private float _maxHealth;
+	private float _currentHealth = 100;
 	private float _damage = 10;
-	private float _healthChanginSpeed = 0.2f;
-
-    public float MaxHealth => _maxHealth; 
-    public float CurrentHealth => _currentHealth; 
-
-    private void Start()
-	{
-		_currentHealth = _maxHealth;
-	}
 
 	public void Hit()
 	{
 		if (_currentHealth > 0)
 		{
 			_currentHealth -= _damage;
-			_healthBar.SetHealth(_currentHealth);
+			_hitPlayer.Invoke();
 		}
 	}
 
@@ -33,7 +30,8 @@ public class Player : MonoBehaviour
 		if (_currentHealth < _maxHealth)
 		{
 			_currentHealth += _damage;
-			_healthBar.SetHealth(_currentHealth);
+			_healPlayer.Invoke();
+
 		}
 	}
 }
